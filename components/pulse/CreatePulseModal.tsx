@@ -20,7 +20,6 @@ interface CreatePulseModalProps {
   isOpen: boolean;
   onClose: () => void;
   onPulseCreated: () => void;
-  initialImage?: { file: File, preview: string } | null;
 }
 
 type Follower = {
@@ -42,7 +41,7 @@ const MediaIcon: React.FC = () => (
 );
 
 
-const CreatePulseModal: React.FC<CreatePulseModalProps> = ({ isOpen, onClose, onPulseCreated, initialImage }) => {
+const CreatePulseModal: React.FC<CreatePulseModalProps> = ({ isOpen, onClose, onPulseCreated }) => {
     const { t } = useLanguage();
     const [mediaFile, setMediaFile] = useState<File | null>(null);
     const [mediaPreview, setMediaPreview] = useState<string | null>(null);
@@ -73,16 +72,8 @@ const CreatePulseModal: React.FC<CreatePulseModalProps> = ({ isOpen, onClose, on
             setFollowerSearch('');
             setSelectedMusic(null);
             setShowMusicSearch(false);
-        } else if (initialImage) {
-            setMediaFile(initialImage.file);
-            setMediaPreview(initialImage.preview);
-            if (initialImage.file.type.startsWith('image/')) {
-                setMediaType('image');
-            } else if (initialImage.file.type.startsWith('video/')) {
-                setMediaType('video');
-            }
         }
-    }, [isOpen, initialImage]);
+    }, [isOpen]);
 
     useEffect(() => {
         if (isOpen && isVentMode && followers.length === 0) {

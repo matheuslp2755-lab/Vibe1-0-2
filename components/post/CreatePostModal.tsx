@@ -22,7 +22,6 @@ interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
   onPostCreated: () => void;
-  initialImage?: { file: File, preview: string } | null;
 }
 
 type Follower = {
@@ -44,7 +43,7 @@ const ImageUploadIcon: React.FC = () => (
 );
 
 
-const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onPostCreated, initialImage }) => {
+const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onPostCreated }) => {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [caption, setCaption] = useState('');
@@ -73,11 +72,8 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose, onPo
             setFollowerSearch('');
             setSelectedMusic(null);
             setShowMusicSearch(false);
-        } else if (initialImage) {
-            setImageFile(initialImage.file);
-            setImagePreview(initialImage.preview);
         }
-    }, [isOpen, initialImage]);
+    }, [isOpen]);
     
     useEffect(() => {
         if (isOpen && isVentMode && followers.length === 0) {

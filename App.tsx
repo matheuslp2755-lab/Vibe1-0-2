@@ -144,14 +144,14 @@ useEffect(() => {
                 const newSubscriptionId = subscriptionChangeEvent.current.id;
 
                 // Log only the ID, not the whole event object, to prevent circular reference errors.
-                console.log("Novo ID de push:", newSubscriptionId);
+                console.log("Novo ID de push: " + newSubscriptionId);
 
                 const currentUser = auth.currentUser;
                 // Only update Firestore if a user is logged in at the time of the change.
                 if (currentUser) {
                     const userDocRef = doc(db, 'users', currentUser.uid);
                     updateDoc(userDocRef, { oneSignalPlayerId: newSubscriptionId || null })
-                        .catch(error => console.error("Failed to update OneSignal Player ID in Firestore:", error));
+                        .catch(error => console.error("Failed to update OneSignal Player ID in Firestore:", error.message));
                 }
             });
         }
@@ -172,10 +172,10 @@ useEffect(() => {
                     const userDoc = await getDoc(userDocRef);
                     if (userDoc.exists() && userDoc.data().oneSignalPlayerId !== subscriptionId) {
                        await updateDoc(userDocRef, { oneSignalPlayerId: subscriptionId });
-                       console.log("OneSignal: Synced subscription ID to Firestore:", subscriptionId);
+                       console.log("OneSignal: Synced subscription ID to Firestore: " + subscriptionId);
                     }
-                } catch(e) {
-                    console.error("Error checking/updating OneSignal playerId on user doc", e);
+                } catch(e: any) {
+                    console.error("Error checking/updating OneSignal playerId on user doc", e.message);
                 }
             }
         } else {
